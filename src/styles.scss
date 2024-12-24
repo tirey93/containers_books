@@ -1,14 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
 
-.style-class{
-    display: flex;
-    justify-content: center;
-    align-items: center;   /* Center vertically*/
-}
-.table-container {
-    max-width: 80%; /* Ustaw maksymalną szerokość tabeli, możesz zmienić wartość */
-    /* max-height: 80%; Dodatkowo maksymalna wysokość*/
-    margin: auto;   /* Wyśrodkowanie na osi poziomej, jeśli tabela nie zajmuje 100% szerokości */
-  }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin-top: 10vh; font-family: Roboto, "Helvetica Neue", sans-serif; }
