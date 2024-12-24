@@ -3,7 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { provideHttpClient } from '@angular/common/http';
+import {MatTableModule} from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -12,9 +15,12 @@ import { ButtonsModule } from '@progress/kendo-angular-buttons';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ButtonsModule
+    MatTableModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    provideHttpClient()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
