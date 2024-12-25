@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
@@ -6,20 +7,20 @@ import { MatSelectChange } from '@angular/material/select';
   standalone: false,
   template: `
     <div class="top-bar-container">
-      <div class="filter-container">
+      <form class="filter-container" [formGroup]="form">
         <mat-form-field>
-          <mat-label>Search</mat-label>
-          <input matInput>
+          <mat-label>Search1</mat-label>
+          <input formControlName="search" matInput>
         </mat-form-field>
         <mat-form-field>
-        <mat-label>Select</mat-label>
-          <mat-select (selectionChange)="handleCover($event)">
+        <mat-label>Cover</mat-label>
+          <mat-select formControlName="cover">
             <mat-option value="none">-</mat-option>
             <mat-option value="hard">Hard</mat-option>
             <mat-option value="soft">Soft</mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
+      </form>
       <a mat-fab extended routerLink=".">
         <mat-icon>add</mat-icon>
         Add
@@ -29,12 +30,26 @@ import { MatSelectChange } from '@angular/material/select';
   `,
   styleUrl: './top-bar.component.scss'
 })
-export class TopBarComponent {
+export class TopBarComponent implements OnInit {
 
-  @Output() topBarCoverChange = new EventEmitter<string>();
-
-  handleCover(e: MatSelectChange) {
-    this.topBarCoverChange.emit(e.value)
+  ngOnInit(): void {
+    this.form.valueChanges.subscribe(() =>{
+      this.topBarChange.emit(this.form)
+    })
   }
 
+  private formBuilder = inject(NonNullableFormBuilder);
+
+  form: TopBarFilter = this.formBuilder.group({
+    search: this.formBuilder.control<string>(""),
+    cover: this.formBuilder.control<CoverType>("none")
+  })
+
+  @Output() topBarChange = new EventEmitter<TopBarFilter>();
 }
+
+type CoverType = "none" | "soft" | "hard"
+export type TopBarFilter = FormGroup<{
+  search: FormControl<string>;
+  cover: FormControl<CoverType>
+}>

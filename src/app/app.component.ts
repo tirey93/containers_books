@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Book } from './book';
 import { BooksService } from './books.service';
+import { TopBarFilter } from './top-bar/top-bar.component';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +10,18 @@ import { BooksService } from './books.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  handleCover(e: string) {
-    console.log("app", e)
+
+  handleBar(filter: TopBarFilter) {
+    console.log("handleBar1", filter.getRawValue())
+    this.handleCover(filter.getRawValue().cover)
+  }
+  handleCover(cover: string) {
+    if (cover === "none") {
+      this.ngOnInit()
+      return;
+    }
+    this.bookService.getBooksByCover$(cover)
+      .subscribe((v) => this.books = v)
   }
 
   editRow(book: Book) {

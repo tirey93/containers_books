@@ -14,4 +14,8 @@ export class BooksService {
   getBooks$(): Observable<Book[]>{
     return this.http.get<Book[]>(`${this.url}/books`)
   }
+
+  getBooksByCover$(cover:string): Observable<Book[]>{
+    return this.http.get<Book[]>(`${this.url}/books?cover=${cover}`)
+  }
 }
