@@ -8,16 +8,29 @@ import { BooksService } from './books.service';
   <div class="table-container">
     <table mat-table [dataSource]="books">
 
-        <!-- Position Column -->
-      <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef> No. </th>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
         <td mat-cell *matCellDef="let element"> {{element.title}} </td>
       </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
+      <ng-container matColumnDef="author">
+        <th mat-header-cell *matHeaderCellDef> Author </th>
         <td mat-cell *matCellDef="let element"> {{element.author}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="pages">
+        <th mat-header-cell *matHeaderCellDef> Pages </th>
+        <td mat-cell *matCellDef="let element"> {{element.pages}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="releaseYear">
+        <th mat-header-cell *matHeaderCellDef> Release Year </th>
+        <td mat-cell *matCellDef="let element"> {{element.releaseYear}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cover">
+        <th mat-header-cell *matHeaderCellDef> Cover </th>
+        <td mat-cell *matCellDef="let element"> {{element.cover}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -32,7 +45,7 @@ import { BooksService } from './books.service';
 })
 export class AppComponent implements OnInit {
   books: Book[] = []
-  displayedColumns: string[] = ['position', 'name'];
+  displayedColumns: string[] = ['title', 'author', 'pages', 'releaseYear', 'cover'];
 
   constructor(private bookService: BooksService) { }
 
