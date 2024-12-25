@@ -1,5 +1,5 @@
 <div class="table-container">
-    <app-top-bar (topBarChange)="handleBar($event)"></app-top-bar>
+    <app-top-bar (addAction)="handleAdd($event)" (topBarChange)="handleBar($event)"></app-top-bar>
 
     <table mat-table [dataSource]="books">
 

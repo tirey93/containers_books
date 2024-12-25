@@ -13,13 +13,16 @@ import {MatButtonModule} from '@angular/material/button'
 import {MatIconModule} from '@angular/material/icon'
 import { MatMenuModule } from '@angular/material/menu';
 import { TopBarComponent } from './top-bar/top-bar.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BookDialogComponent } from './book-dialog/book-dialog.component';
+import { DialogModule} from '@angular/cdk/dialog';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    TopBarComponent
+    TopBarComponent,
+    BookDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    DialogModule
   ],
   providers: [
     provideHttpClient()

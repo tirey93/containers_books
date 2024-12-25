@@ -1,6 +1,9 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
+import { BookDialogComponent } from '../book-dialog/book-dialog.component';
+import { Book } from '../book';
 
 @Component({
   selector: 'app-top-bar',
@@ -9,7 +12,7 @@ import { MatSelectChange } from '@angular/material/select';
     <div class="top-bar-container">
       <form class="filter-container" [formGroup]="form">
         <mat-form-field>
-          <mat-label>Search1</mat-label>
+          <mat-label>Search</mat-label>
           <input formControlName="search" matInput>
         </mat-form-field>
         <mat-form-field>
@@ -21,7 +24,7 @@ import { MatSelectChange } from '@angular/material/select';
           </mat-select>
         </mat-form-field>
       </form>
-      <a mat-fab extended routerLink=".">
+      <a mat-fab extended routerLink="." (click)="addBook()">
         <mat-icon>add</mat-icon>
         Add
       </a>
@@ -32,12 +35,26 @@ import { MatSelectChange } from '@angular/material/select';
 })
 export class TopBarComponent implements OnInit {
 
+  addBook() {
+    const dialogRef = this.dialog.open<Book | null>(BookDialogComponent, {
+      width: '250px',
+      data: {id: null},
+    });
+
+    dialogRef.closed.subscribe(result => {
+      console.log('The add dialog was closed', result);
+      this.addAction.emit(result!)
+    });
+    
+  }
+
   ngOnInit(): void {
     this.form.valueChanges.subscribe(() =>{
       this.topBarChange.emit(this.form)
     })
   }
-
+  
+  dialog = inject(Dialog);
   private formBuilder = inject(NonNullableFormBuilder);
 
   form: TopBarFilter = this.formBuilder.group({
@@ -46,6 +63,7 @@ export class TopBarComponent implements OnInit {
   })
 
   @Output() topBarChange = new EventEmitter<TopBarFilter>();
+  @Output() addAction = new EventEmitter<Book>();
 }
 
 type CoverType = "none" | "soft" | "hard"
