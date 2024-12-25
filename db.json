@@ -30,7 +30,7 @@
             "author": "Dmitry Glukhovsky",
             "pages": 480,
             "releaseYear": 2005,
-             "cover": "soft"
+            "cover": "soft"
         },
          {
             "id": 4,
@@ -38,7 +38,7 @@
             "author": "Frank Herbert",
             "pages": 604,
             "releaseYear": 1965,
-             "cover": "hard"
+            "cover": "hard"
         },
         {
             "id": 5,

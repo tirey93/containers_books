@@ -6,26 +6,9 @@ import { BooksService } from './books.service';
   selector: 'app-root',
   template: `
   <div class="table-container">
-
-    <div class="top-bar-container">
-      <div class="filter-container">
-        <mat-form-field>
-          <mat-label>Input</mat-label>
-          <input matInput>
-        </mat-form-field>
-        <mat-form-field>
-        <mat-label>Select</mat-label>
-          <mat-select>
-            <mat-option value="one">First option</mat-option>
-            <mat-option value="two">Second option</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <a mat-fab extended routerLink=".">
-        <mat-icon>add</mat-icon>
-        Add
-      </a>
-    </div>
+    <app-top-bar
+      (topBarCoverChange)="handleCover($event)"
+    ></app-top-bar>
     
     <table mat-table [dataSource]="books">
 
@@ -84,6 +67,9 @@ import { BooksService } from './books.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
+  handleCover(e: string) {
+    console.log("app", e)
+  }
 
   editRow(book: Book) {
     console.log(book.id)
