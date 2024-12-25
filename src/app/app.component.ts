@@ -6,6 +6,27 @@ import { BooksService } from './books.service';
   selector: 'app-root',
   template: `
   <div class="table-container">
+
+    <div class="top-bar-container">
+      <div class="filter-container">
+        <mat-form-field>
+          <mat-label>Input</mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field>
+        <mat-label>Select</mat-label>
+          <mat-select>
+            <mat-option value="one">First option</mat-option>
+            <mat-option value="two">Second option</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <a mat-fab extended routerLink=".">
+        <mat-icon>add</mat-icon>
+        Add
+      </a>
+    </div>
+    
     <table mat-table [dataSource]="books">
 
       <ng-container matColumnDef="title">
@@ -33,6 +54,25 @@ import { BooksService } from './books.service';
         <td mat-cell *matCellDef="let element"> {{element.cover}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+             <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editRow(element)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+                 <button mat-menu-item>
+                    <mat-icon>delete</mat-icon>
+                    <span>Delete</span>
+                </button>
+            </mat-menu>
+        </td>
+    </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
@@ -44,8 +84,12 @@ import { BooksService } from './books.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
+
+  editRow(book: Book) {
+    console.log(book.id)
+  }
   books: Book[] = []
-  displayedColumns: string[] = ['title', 'author', 'pages', 'releaseYear', 'cover'];
+  displayedColumns: string[] = ['title', 'author', 'pages', 'releaseYear', 'cover', 'actions'];
 
   constructor(private bookService: BooksService) { }
 
