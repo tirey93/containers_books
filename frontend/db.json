@@ -1,0 +1,52 @@
+{
+    "books":[
+        {
+            "id": 0,
+            "title": "Harry Potter",
+            "author": "J.K. Rowling",
+            "pages": 724,
+            "releaseYear": 2001,
+            "cover": "hard"
+        },
+        {
+            "id": 1,
+            "title": "Hobbit",
+            "author": "J. R. R. Tolkien",
+            "pages": 1088,
+            "releaseYear": 1955,
+            "cover": "soft"
+        },
+        {
+           "id": 2,
+            "title": "Wiedźmin: Ostatnie życzenie",
+            "author": "Andrzej Sapkowski",
+            "pages": 328,
+            "releaseYear": 1993,
+            "cover": "soft"
+        },
+        {
+            "id": 3,
+            "title": "Metro 2033",
+            "author": "Dmitry Glukhovsky",
+            "pages": 480,
+            "releaseYear": 2005,
+            "cover": "soft"
+        },
+         {
+            "id": 4,
+            "title": "Diuna",
+            "author": "Frank Herbert",
+            "pages": 604,
+            "releaseYear": 1965,
+            "cover": "hard"
+        },
+        {
+            "id": 5,
+            "title": "Trylogia Husycka",
+            "author": "Andrzej Sapkowski",
+            "pages": 988,
+            "releaseYear": 1996,
+            "cover": "hard"
+        }
+    ]
+}
