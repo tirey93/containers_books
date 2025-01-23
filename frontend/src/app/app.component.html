@@ -1,5 +1,5 @@
 <div class="table-container">
-    <app-top-bar (addAction)="handleAdd($event)" (topBarChange)="handleBar($event)"></app-top-bar>
+    <app-top-bar (addAction)="handleAdd($event)" (coverChange)="handleCover($event)"></app-top-bar>
 
     <table mat-table [dataSource]="books">
 
@@ -39,7 +39,7 @@
                         <mat-icon>edit</mat-icon>
                         <span>Edit</span>
                     </button>
-                    <button mat-menu-item>
+                    <button mat-menu-item (click)="deleteRow(element)">
                         <mat-icon>delete</mat-icon>
                         <span>Delete</span>
                     </button>

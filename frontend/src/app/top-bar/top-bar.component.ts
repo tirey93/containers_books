@@ -13,7 +13,7 @@ import { Book } from '../book';
       <form class="filter-container" [formGroup]="form">
         <mat-form-field>
           <mat-label>Search</mat-label>
-          <input formControlName="search" matInput>
+          <input (ngModelChange)="search()" formControlName="search" matInput>
         </mat-form-field>
         <mat-form-field>
         <mat-label>Cover</mat-label>
@@ -35,6 +35,10 @@ import { Book } from '../book';
 })
 export class TopBarComponent implements OnInit {
 
+  search(){
+    console.log("abc")
+  }
+
   addBook() {
     const dialogRef = this.dialog.open<Book | null>(BookDialogComponent, {
       width: '250px',
@@ -49,8 +53,8 @@ export class TopBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form.valueChanges.subscribe(() =>{
-      this.topBarChange.emit(this.form)
+    this.form.get("cover")?.valueChanges.subscribe((x) =>{
+      this.coverChange.emit(x.toString())
     })
   }
   
@@ -62,7 +66,7 @@ export class TopBarComponent implements OnInit {
     cover: this.formBuilder.control<CoverType>("none")
   })
 
-  @Output() topBarChange = new EventEmitter<TopBarFilter>();
+  @Output() coverChange = new EventEmitter<string>();
   @Output() addAction = new EventEmitter<Book>();
 }
 

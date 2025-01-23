@@ -19,40 +19,57 @@ namespace ContainerBackend.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<BookResponse> Get()
+        public IEnumerable<BookResponse> Get([FromQuery] string cover)
         {
-            Console.WriteLine("In Get2");
-            //return new List<BookResponse>
-            //{
-            //    new BookResponse
-            //    {
-            //        Id = 1,
-            //        Title = "Harry Potter1",
-            //        Author = "J.K. Rowling",
-            //        Pages = 724,
-            //        ReleaseYear = 2001,
-            //        Cover = "hard"
-            //    },
-            //    new BookResponse
-            //    {
-            //        Id = 2,
-            //        Title = "Hobbit",
-            //        Author = "J. R. R. Tolkien",
-            //        Pages = 1088,
-            //        ReleaseYear = 1955,
-            //        Cover = "soft"
-            //    },
-            //    new BookResponse
-            //    {
-            //        Id = 3,
-            //        Title = "Wiedźmin: Ostatnie życzenie",
-            //        Author = "Andrzej Sapkowski",
-            //        Pages = 328,
-            //        ReleaseYear = 1993,
-            //        Cover = "soft"
-            //    },
-            //};
+            if (cover != null) 
+                return _appDbContext.Books.Where(book => book.Cover == cover).Select(x => x.ToResponse());
             return _appDbContext.Books.Select(x => x.ToResponse());
+        }
+
+        [HttpGet]
+        [Route("search/{query}")]
+        public IEnumerable<BookResponse> GetSearch(string query)
+        {
+            return _appDbContext.Books.Where(x => x.Title.Contains(query) || x.Author.Contains(query)).Select(x => x.ToResponse());
+        }
+       
+        [HttpGet]
+        [Route("{id:int}")]
+        public BookResponse GetById(int id)
+        {
+            return _appDbContext.Books.FirstOrDefault(x => x.Id == id).ToResponse();
+        }
+
+        [HttpPost]
+        public void Add(Book book)
+        {
+            _appDbContext.Books.Add(book);
+            _appDbContext.SaveChanges();
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public void Edit(int id, Book book)
+        {
+            var entity = _appDbContext.Books.FirstOrDefault(x => x.Id == id);
+
+            entity.Author = book.Author;
+            entity.Title = book.Title;
+            entity.Cover = book.Cover;
+            entity.Pages = book.Pages;
+            entity.ReleaseYear = book.ReleaseYear;
+
+            _appDbContext.SaveChanges();
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public void Delete(int id)
+        {
+            var entity = _appDbContext.Books.FirstOrDefault(x => x.Id == id);
+
+            _appDbContext.Books.Remove(entity);
+            _appDbContext.SaveChanges();
         }
     }
 }

@@ -1,7 +1,16 @@
 :host {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
     background: #fff;
     border-radius: 8px;
-    padding: 8px 16px 16px;
+    padding: 20px;
+    width: 600px;
+    gap: 60px;
   }
-  
+
+  .dialog-form-field { /* Możesz użyć innej nazwy klasy */
+    width: 100%; /* Albo konkretną szerokość, np. 300px */
+    padding-top: 16px;
+  }

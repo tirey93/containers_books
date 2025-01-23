@@ -14,12 +14,19 @@ import { BookDialogComponent } from './book-dialog/book-dialog.component';
 export class AppComponent implements OnInit {
   handleAdd(e: Book) {
     console.log("handleAdd", e)
+    this.bookService.getBooks$()
+      .subscribe((v) => this.books = v)
   }
 
-  handleBar(filter: TopBarFilter) {
-    console.log("handleBar1", filter.getRawValue())
-    this.handleCover(filter.getRawValue().cover)
+  handleSearch(search: string) {
+    if (search.length > 0) {
+      this.bookService.getSearchBooks$(search).subscribe(x => {
+        console.log(x.length);
+        this.books = x
+      })
+    }
   }
+
   handleCover(cover: string) {
     if (cover === "none") {
       this.ngOnInit()
@@ -31,13 +38,21 @@ export class AppComponent implements OnInit {
 
   editRow(book: Book) {
     const dialogRef = this.dialog.open<Book | null>(BookDialogComponent, {
-      width: '250px',
-      data: {id: book.id},
+      data: { id: book.id },
     });
 
     dialogRef.closed.subscribe(result => {
       console.log('The dialog was closed', result);
+      this.bookService.getBooks$()
+        .subscribe((v) => this.books = v)
     });
+  }
+
+  deleteRow(book: Book) {
+    this.bookService.deleteBook$(book.id).subscribe(x => {
+      this.bookService.getBooks$()
+        .subscribe((v) => this.books = v)
+    })
   }
   books: Book[] = []
   displayedColumns: string[] = ['title', 'author', 'pages', 'releaseYear', 'cover', 'actions'];
