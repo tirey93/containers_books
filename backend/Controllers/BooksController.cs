@@ -7,9 +7,19 @@ namespace ContainerBackend.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<BookResponse> Get()
+        private readonly IConfiguration _configuration;
+        private readonly AppDbContext _appDbContext;
+
+        public BooksController(IConfiguration configuration, AppDbContext appDbContext)
         {
+            _configuration = configuration;
+            _appDbContext = appDbContext;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<BookResponse>> Get()
+        {
+            await Connect();
             return new List<BookResponse>
             {
                 new BookResponse
@@ -40,6 +50,11 @@ namespace ContainerBackend.Controllers
                     Cover = "soft"
                 },
             };
+        }
+
+        private async Task Connect()
+        {
+            var list = _appDbContext.Books;
         }
     }
 }
