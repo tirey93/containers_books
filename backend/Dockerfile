@@ -19,5 +19,14 @@ ENV ASPNETCORE_URLS=http://+:80
 
 ENTRYPOINT ["dotnet", "ContainerBackend.dll"]
 
+
+
+
+
+
+
+
+
+
 # docker build -t container_backend .
 # docker run  -d --restart=always -p 8081:80 container_backend

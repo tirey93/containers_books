@@ -1,5 +1,7 @@
-using ContainerBackend;
+﻿using ContainerBackend;
+using ContainerBackend.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,5 +32,30 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+
+var maxRetryAttempts = 10;
+var retryInterval = TimeSpan.FromSeconds(5);
+for (int i = 0; i < maxRetryAttempts; i++)
+{
+    try
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            dbContext.Database.EnsureCreated();
+
+            dbContext.Books.ExecuteDelete();
+            FeedDb.FeedBooks(dbContext);
+            dbContext.SaveChanges();
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Attempt: {i + 1}/{maxRetryAttempts}: {ex.Message}");
+        Thread.Sleep(retryInterval);
+    }
+}
 
 app.Run();

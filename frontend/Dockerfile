@@ -1,9 +1,13 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm cache clean --force
 COPY . .
+RUN npm config set registry http://registry.npmjs.org/
+RUN npm install
+
 RUN npm run build -- --output-path=dist/my-app
+
 FROM nginx:alpine
 COPY --from=builder /app/dist/my-app/browser /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
