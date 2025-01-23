@@ -16,16 +16,26 @@ services:
 
   dotnet-app:
     build:
-      context: .  # Katalog, w którym znajduje się Dockerfile (aktualny katalog)
+      context: ./backend  # Katalog, w którym znajduje się Dockerfile (aktualny katalog)
       dockerfile: Dockerfile # Nazwa pliku Dockerfile
     container_name: dotnet-app
     restart: always
     ports:
-      - "8080:80" # Zmień port, jeśli twoja aplikacja działa na innym porcie
+      - "5241:80" # Zmień port, jeśli twoja aplikacja działa na innym porcie
     environment:
       ConnectionStrings__Default: "Server=mariadb-container;Port=3306;Database=books;User=root;Password=;"
     depends_on:
       - mariadb
+    networks:
+      - backend
+  front-app:
+    build:
+      context: ./frontend  # Katalog, w którym znajduje się Dockerfile (aktualny katalog)
+      dockerfile: Dockerfile # Nazwa pliku Dockerfile
+    container_name: front-app
+    restart: always
+    ports:
+      - "8080:80" # Zmień port, jeśli twoja aplikacja działa na innym porcie
     networks:
       - backend
 
