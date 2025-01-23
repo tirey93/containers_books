@@ -19,11 +19,15 @@ export class AppComponent implements OnInit {
   }
 
   handleSearch(search: string) {
+    console.log(search)
     if (search.length > 0) {
       this.bookService.getSearchBooks$(search).subscribe(x => {
         console.log(x.length);
         this.books = x
       })
+    } else {
+      this.bookService.getBooks$()
+      .subscribe((v) => this.books = v)
     }
   }
 

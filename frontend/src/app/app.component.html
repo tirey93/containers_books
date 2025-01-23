@@ -1,5 +1,5 @@
 <div class="table-container">
-    <app-top-bar (addAction)="handleAdd($event)" (coverChange)="handleCover($event)"></app-top-bar>
+    <app-top-bar (addAction)="handleAdd($event)" (coverChange)="handleCover($event)" (searchChange)="handleSearch($event)"></app-top-bar>
 
     <table mat-table [dataSource]="books">
 

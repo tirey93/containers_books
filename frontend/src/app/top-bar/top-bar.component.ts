@@ -36,7 +36,7 @@ import { Book } from '../book';
 export class TopBarComponent implements OnInit {
 
   search(){
-    console.log("abc")
+    this.searchChange.emit(this.form.get("search")?.value)
   }
 
   addBook() {
@@ -67,6 +67,7 @@ export class TopBarComponent implements OnInit {
   })
 
   @Output() coverChange = new EventEmitter<string>();
+  @Output() searchChange = new EventEmitter<string>();
   @Output() addAction = new EventEmitter<Book>();
 }
 
