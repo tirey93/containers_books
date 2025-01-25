@@ -13,7 +13,7 @@ import { Book } from '../book';
       <form class="filter-container" [formGroup]="form">
         <mat-form-field>
           <mat-label>Search</mat-label>
-          <input (ngModelChange)="search()" formControlName="search" matInput>
+          <input formControlName="search" matInput>
         </mat-form-field>
         <mat-form-field>
         <mat-label>Cover</mat-label>
@@ -35,13 +35,8 @@ import { Book } from '../book';
 })
 export class TopBarComponent implements OnInit {
 
-  search(){
-    this.searchChange.emit(this.form.get("search")?.value)
-  }
-
   addBook() {
     const dialogRef = this.dialog.open<Book | null>(BookDialogComponent, {
-      width: '250px',
       data: {id: null},
     });
 
@@ -53,8 +48,11 @@ export class TopBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form.get("cover")?.valueChanges.subscribe((x) =>{
-      this.coverChange.emit(x.toString())
+    this.form.controls.cover.valueChanges.subscribe((x) =>{
+      this.coverChange.emit(x)
+    })
+    this.form.controls.search.valueChanges.subscribe((x) =>{
+      this.searchChange.emit(this.form.controls.search.value)
     })
   }
   
@@ -66,12 +64,12 @@ export class TopBarComponent implements OnInit {
     cover: this.formBuilder.control<CoverType>("none")
   })
 
-  @Output() coverChange = new EventEmitter<string>();
+  @Output() coverChange = new EventEmitter<CoverType>();
   @Output() searchChange = new EventEmitter<string>();
   @Output() addAction = new EventEmitter<Book>();
 }
 
-type CoverType = "none" | "soft" | "hard"
+export type CoverType = "none" | "soft" | "hard"
 export type TopBarFilter = FormGroup<{
   search: FormControl<string>;
   cover: FormControl<CoverType>

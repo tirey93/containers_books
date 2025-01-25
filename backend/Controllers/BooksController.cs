@@ -28,9 +28,12 @@ namespace ContainerBackend.Controllers
 
         [HttpGet]
         [Route("search/{query}")]
-        public IEnumerable<BookResponse> GetSearch(string query)
+        public IEnumerable<BookResponse> GetSearch(string query, [FromQuery] string cover)
         {
-            return _appDbContext.Books.Where(x => x.Title.Contains(query) || x.Author.Contains(query)).Select(x => x.ToResponse());
+            return _appDbContext.Books
+                .Where(x => x.Title.Contains(query) || x.Author.Contains(query))
+                .Where(x => cover == "none" || x.Cover == cover)
+                .Select(x => x.ToResponse());
         }
        
         [HttpGet]

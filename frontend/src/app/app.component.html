@@ -1,7 +1,7 @@
 <div class="table-container">
     <app-top-bar (addAction)="handleAdd($event)" (coverChange)="handleCover($event)" (searchChange)="handleSearch($event)"></app-top-bar>
 
-    <table mat-table [dataSource]="books">
+    <table mat-table [dataSource]="books$">
 
         <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef> Title </th>

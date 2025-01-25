@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Book } from './book';
 import { BooksService } from './books.service';
-import { TopBarFilter } from './top-bar/top-bar.component';
 import { Dialog } from '@angular/cdk/dialog';
 import { BookDialogComponent } from './book-dialog/book-dialog.component';
+import { Observable } from 'rxjs';
+import { CoverType } from './top-bar/top-bar.component';
 
 @Component({
   selector: 'app-root',
@@ -11,33 +12,28 @@ import { BookDialogComponent } from './book-dialog/book-dialog.component';
   standalone: false,
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   handleAdd(e: Book) {
     console.log("handleAdd", e)
-    this.bookService.getBooks$()
-      .subscribe((v) => this.books = v)
+    this.books$ = this.bookService.getBooks$();
   }
 
   handleSearch(search: string) {
     console.log(search)
     if (search.length > 0) {
-      this.bookService.getSearchBooks$(search).subscribe(x => {
-        console.log(x.length);
-        this.books = x
-      })
+      this.books$ = this.bookService.getSearchBooks$(search, this.coverType);
     } else {
-      this.bookService.getBooks$()
-      .subscribe((v) => this.books = v)
+      this.books$ = this.bookService.getBooks$();
     }
   }
 
-  handleCover(cover: string) {
+  handleCover(cover: CoverType) {
+    this.coverType = cover;
     if (cover === "none") {
-      this.ngOnInit()
+      this.books$ = this.bookService.getBooks$();
       return;
     }
-    this.bookService.getBooksByCover$(cover)
-      .subscribe((v) => this.books = v)
+    this.books$ = this.bookService.getBooksByCover$(cover);
   }
 
   editRow(book: Book) {
@@ -47,26 +43,22 @@ export class AppComponent implements OnInit {
 
     dialogRef.closed.subscribe(result => {
       console.log('The dialog was closed', result);
-      this.bookService.getBooks$()
-        .subscribe((v) => this.books = v)
+      this.books$ = this.bookService.getBooks$()
     });
   }
 
   deleteRow(book: Book) {
     this.bookService.deleteBook$(book.id).subscribe(x => {
-      this.bookService.getBooks$()
-        .subscribe((v) => this.books = v)
+      this.books$ =this.bookService.getBooks$();
     })
   }
-  books: Book[] = []
+  books$: Observable<Book[]>;
+  coverType: CoverType = "none"
   displayedColumns: string[] = ['title', 'author', 'pages', 'releaseYear', 'cover', 'actions'];
 
   dialog = inject(Dialog);
-  constructor(private bookService: BooksService) { }
-
-  ngOnInit(): void {
-    this.bookService.getBooks$()
-      .subscribe((v) => this.books = v)
-  }
+  constructor(private bookService: BooksService) {
+    this.books$ = this.bookService.getBooks$();
+   }
 
 }
