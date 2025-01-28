@@ -12,6 +12,7 @@ namespace ContainerBackend.Entities
         public int Pages { get; set; }
         public int ReleaseYear { get; set; }
         public string Cover { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public static class BookExtensions

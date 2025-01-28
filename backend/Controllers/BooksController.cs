@@ -22,8 +22,8 @@ namespace ContainerBackend.Controllers
         public IEnumerable<BookResponse> Get([FromQuery] string cover)
         {
             if (cover != null) 
-                return _appDbContext.Books.Where(book => book.Cover == cover).Select(x => x.ToResponse());
-            return _appDbContext.Books.Select(x => x.ToResponse());
+                return _appDbContext.Books.Where(book => book.Cover == cover && !book.IsDeleted).Select(x => x.ToResponse());
+            return _appDbContext.Books.Where(x => !x.IsDeleted).Select(x => x.ToResponse());
         }
 
         [HttpGet]
@@ -33,6 +33,7 @@ namespace ContainerBackend.Controllers
             return _appDbContext.Books
                 .Where(x => x.Title.Contains(query) || x.Author.Contains(query))
                 .Where(x => cover == "none" || x.Cover == cover)
+                .Where(x => !x.IsDeleted)
                 .Select(x => x.ToResponse());
         }
        
@@ -40,7 +41,7 @@ namespace ContainerBackend.Controllers
         [Route("{id:int}")]
         public BookResponse GetById(int id)
         {
-            return _appDbContext.Books.FirstOrDefault(x => x.Id == id).ToResponse();
+            return _appDbContext.Books.FirstOrDefault(x => x.Id == id && !x.IsDeleted).ToResponse();
         }
 
         [HttpPost]
@@ -71,7 +72,17 @@ namespace ContainerBackend.Controllers
         {
             var entity = _appDbContext.Books.FirstOrDefault(x => x.Id == id);
 
-            _appDbContext.Books.Remove(entity);
+            entity.IsDeleted = true;
+            _appDbContext.SaveChanges();
+        }
+
+
+        [HttpPost]
+        [Route("{id:int}")]
+        public void Retrive(int id)
+        {
+            var entity = _appDbContext.Books.FirstOrDefault(x => x.Id == id);
+            entity.IsDeleted = false;
             _appDbContext.SaveChanges();
         }
     }
