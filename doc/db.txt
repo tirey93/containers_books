@@ -1,0 +1,13 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+// https://dbdiagram.io/d
+
+Table posts {
+  id integer [primary key]
+  title varchar
+  author text
+  pages integer
+  release_year varchar
+  cover text
+  is_deleted bool
+}
