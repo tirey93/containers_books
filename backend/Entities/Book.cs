@@ -28,6 +28,6 @@ namespace ContainerBackend.Entities
                 ReleaseYear = book.ReleaseYear,
                 Cover = book.Cover
             };
-        }
+        }//
     }
 }
